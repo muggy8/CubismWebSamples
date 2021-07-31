@@ -1,4 +1,4 @@
-(function(window){
+(function(window, setupDebugListeners){
     if (!window.appHost){
         let callbackMemory = {}
         window.appHost = {
@@ -21,5 +21,9 @@
                 }
             }
         }
+
+        setupDebugListeners(window.appHost)
     }
-})(window);
+})(window, function(appHost){
+    // nothing yet...
+});

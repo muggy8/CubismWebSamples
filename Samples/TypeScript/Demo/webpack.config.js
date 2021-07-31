@@ -1,5 +1,6 @@
 
 var path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -36,5 +37,14 @@ module.exports = {
     useLocalIp: true,
     writeToDisk: true
   },
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src' ,"external-interface.js"),
+        },
+      ],
+    }),
+  ]
 }
