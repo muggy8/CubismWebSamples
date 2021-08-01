@@ -1,4 +1,4 @@
-(function(window, setupDebugListeners){
+(function(window, setupBindings){
     if (!window.appHost){
         let callbackMemory = {}
         window.appHost = {
@@ -22,8 +22,11 @@
             }
         }
 
-        setupDebugListeners(window.appHost)
+        setupBindings(window.appHost)
     }
 })(window, function(appHost){
-    // nothing yet...
+    window.addEventListener("message", (event) => {
+        JSON.parse(event.data)
+        console.log(event.data)
+    }, false);
 });

@@ -27,7 +27,7 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: path.resolve(__dirname, '../../..'),
+    contentBase: path.resolve(__dirname, 'dist'),
     watchContentBase: true,
     inline: true,
     hot: true,
@@ -43,6 +43,17 @@ module.exports = {
       patterns: [
         {
           from: path.resolve(__dirname, 'src' ,"external-interface.js"),
+        },
+        {
+          from: path.resolve(__dirname, '../../..', "Core"),
+          to: "Core"
+        },
+        {
+          from: path.resolve(__dirname, '../..', "Resources"),
+          to: "Resources"
+        },
+        {
+          from: path.resolve(__dirname, "index.html"),
         },
       ],
     }),
