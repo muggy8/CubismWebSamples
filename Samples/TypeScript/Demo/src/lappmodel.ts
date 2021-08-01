@@ -477,24 +477,35 @@ export class LAppModel extends CubismUserModel {
       this._expressionManager.updateMotion(this._model, deltaTimeSeconds); // 表情でパラメータ更新（相対変化）
     }
 
-    // ドラッグによる変化
-    // ドラッグによる顔の向きの調整
-    this._model.addParameterValueById(this._idParamAngleX, this._dragX * 30); // -30から30の値を加える
-    this._model.addParameterValueById(this._idParamAngleY, this._dragY * 30);
-    this._model.addParameterValueById(
-      this._idParamAngleZ,
-      this._dragX * this._dragY * -30
+    // this stuff is to support the touch controls of the base app.
+    // // ドラッグによる変化
+    // // ドラッグによる顔の向きの調整
+    // this._model.addParameterValueById(this._idParamAngleX, this._dragX * 30); // -30から30の値を加える
+    // this._model.addParameterValueById(this._idParamAngleY, this._dragY * 30);
+    // this._model.addParameterValueById(
+    //   this._idParamAngleZ,
+    //   this._dragX * this._dragY * -30
+    // );
+
+    // // ドラッグによる体の向きの調整
+    // this._model.addParameterValueById(
+    //   this._idParamBodyAngleX,
+    //   this._dragX * 10
+    // ); // -10から10の値を加える
+
+    // // ドラッグによる目の向きの調整
+    // this._model.addParameterValueById(this._idParamEyeBallX, this._dragX); // -1から1の値を加える
+    // this._model.addParameterValueById(this._idParamEyeBallY, this._dragY);
+
+    let hostParams:Array<String> = Object.keys(this._appHostParams)
+    for(
+      let i = 0, param; 
+      param = hostParams[i]; 
+      i++, param.startsWith("Param") && this._model.addParameterValueById(
+        CubismFramework.getIdManager().getId(param), 
+        this._appHostParams[param]
+      )
     );
-
-    // ドラッグによる体の向きの調整
-    this._model.addParameterValueById(
-      this._idParamBodyAngleX,
-      this._dragX * 10
-    ); // -10から10の値を加える
-
-    // ドラッグによる目の向きの調整
-    this._model.addParameterValueById(this._idParamEyeBallX, this._dragX); // -1から1の値を加える
-    this._model.addParameterValueById(this._idParamEyeBallY, this._dragY);
 
     // 呼吸など
     if (this._breath != null) {
@@ -856,7 +867,19 @@ export class LAppModel extends CubismUserModel {
     this._motionCount = 0;
     this._allMotionCount = 0;
     this._wavFileHandler = new LAppWavFileHandler();
+
+    this._appHostParams = {};
+    if ((window as any).appHost){
+      (window as any).appHost.on("params", (newAppHostParams)=>{
+        // console.log(newAppHostParams)
+        Object.assign(this._appHostParams, newAppHostParams);
+      });
+    }
   }
+
+  _appHostParams: {
+    [index:string]: any,
+  };
 
   _modelSetting: ICubismModelSetting; // モデルセッティング情報
   _modelHomeDir: string; // モデルセッティングが置かれたディレクトリ
