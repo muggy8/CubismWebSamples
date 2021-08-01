@@ -238,18 +238,18 @@ export class LAppModel extends CubismUserModel {
       this._breath = CubismBreath.create();
 
       const breathParameters: csmVector<BreathParameterData> = new csmVector();
-      breathParameters.pushBack(
-        new BreathParameterData(this._idParamAngleX, 0.0, 15.0, 6.5345, 0.5)
-      );
-      breathParameters.pushBack(
-        new BreathParameterData(this._idParamAngleY, 0.0, 8.0, 3.5345, 0.5)
-      );
-      breathParameters.pushBack(
-        new BreathParameterData(this._idParamAngleZ, 0.0, 10.0, 5.5345, 0.5)
-      );
-      breathParameters.pushBack(
-        new BreathParameterData(this._idParamBodyAngleX, 0.0, 4.0, 15.5345, 0.5)
-      );
+      // breathParameters.pushBack(
+      //   new BreathParameterData(this._idParamAngleX, 0.0, 15.0, 6.5345, 0.5)
+      // );
+      // breathParameters.pushBack(
+      //   new BreathParameterData(this._idParamAngleY, 0.0, 8.0, 3.5345, 0.5)
+      // );
+      // breathParameters.pushBack(
+      //   new BreathParameterData(this._idParamAngleZ, 0.0, 10.0, 5.5345, 0.5)
+      // );
+      // breathParameters.pushBack(
+      //   new BreathParameterData(this._idParamBodyAngleX, 0.0, 4.0, 15.5345, 0.5)
+      // );
       breathParameters.pushBack(
         new BreathParameterData(
           CubismFramework.getIdManager().getId(
@@ -450,19 +450,19 @@ export class LAppModel extends CubismUserModel {
 
     //--------------------------------------------------------------------------
     this._model.loadParameters(); // 前回セーブされた状態をロード
-    if (this._motionManager.isFinished()) {
-      // モーションの再生がない場合、待機モーションの中からランダムで再生する
-      this.startRandomMotion(
-        LAppDefine.MotionGroupIdle,
-        LAppDefine.PriorityIdle
-      );
-    } else {
-      motionUpdated = this._motionManager.updateMotion(
-        this._model,
-        deltaTimeSeconds
-      ); // モーションを更新
-    }
-    this._model.saveParameters(); // 状態を保存
+    // if (this._motionManager.isFinished()) {
+    //   // モーションの再生がない場合、待機モーションの中からランダムで再生する
+    //   this.startRandomMotion(
+    //     LAppDefine.MotionGroupIdle,
+    //     LAppDefine.PriorityIdle
+    //   );
+    // } else {
+    //   motionUpdated = this._motionManager.updateMotion(
+    //     this._model,
+    //     deltaTimeSeconds
+    //   ); // モーションを更新
+    // }
+    // this._model.saveParameters(); // 状態を保存
     //--------------------------------------------------------------------------
 
     // まばたき
