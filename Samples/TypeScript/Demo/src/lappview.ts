@@ -177,7 +177,7 @@ export class LAppView {
    * @param pointY スクリーンY座標
    */
   public onTouchesBegan(pointX: number, pointY: number): void {
-    this._touchManager.touchesBegan(pointX, pointY);
+    // this._touchManager.touchesBegan(pointX, pointY);
   }
 
   /**
@@ -187,13 +187,13 @@ export class LAppView {
    * @param pointY スクリーンY座標
    */
   public onTouchesMoved(pointX: number, pointY: number): void {
-    const viewX: number = this.transformViewX(this._touchManager.getX());
-    const viewY: number = this.transformViewY(this._touchManager.getY());
+    // const viewX: number = this.transformViewX(this._touchManager.getX());
+    // const viewY: number = this.transformViewY(this._touchManager.getY());
 
-    this._touchManager.touchesMoved(pointX, pointY);
+    // this._touchManager.touchesMoved(pointX, pointY);
 
-    const live2DManager: LAppLive2DManager = LAppLive2DManager.getInstance();
-    live2DManager.onDrag(viewX, viewY);
+    // const live2DManager: LAppLive2DManager = LAppLive2DManager.getInstance();
+    // live2DManager.onDrag(viewX, viewY);
   }
 
   /**
@@ -203,29 +203,29 @@ export class LAppView {
    * @param pointY スクリーンY座標
    */
   public onTouchesEnded(pointX: number, pointY: number): void {
-    // タッチ終了
-    const live2DManager: LAppLive2DManager = LAppLive2DManager.getInstance();
-    live2DManager.onDrag(0.0, 0.0);
+    // // タッチ終了
+    // const live2DManager: LAppLive2DManager = LAppLive2DManager.getInstance();
+    // live2DManager.onDrag(0.0, 0.0);
 
-    {
-      // シングルタップ
-      const x: number = this._deviceToScreen.transformX(
-        this._touchManager.getX()
-      ); // 論理座標変換した座標を取得。
-      const y: number = this._deviceToScreen.transformY(
-        this._touchManager.getY()
-      ); // 論理座標変化した座標を取得。
+    // {
+    //   // シングルタップ
+    //   const x: number = this._deviceToScreen.transformX(
+    //     this._touchManager.getX()
+    //   ); // 論理座標変換した座標を取得。
+    //   const y: number = this._deviceToScreen.transformY(
+    //     this._touchManager.getY()
+    //   ); // 論理座標変化した座標を取得。
 
-      if (LAppDefine.DebugTouchLogEnable) {
-        LAppPal.printMessage(`[APP]touchesEnded x: ${x} y: ${y}`);
-      }
-      live2DManager.onTap(x, y);
+    //   if (LAppDefine.DebugTouchLogEnable) {
+    //     LAppPal.printMessage(`[APP]touchesEnded x: ${x} y: ${y}`);
+    //   }
+    //   live2DManager.onTap(x, y);
 
-      // 歯車にタップしたか
-      if (this._gear?.isHit(pointX, pointY)) {
-        live2DManager.nextScene();
-      }
-    }
+    //   // 歯車にタップしたか
+    //   if (this._gear?.isHit(pointX, pointY)) {
+    //     live2DManager.nextScene();
+    //   }
+    // }
   }
 
   /**
