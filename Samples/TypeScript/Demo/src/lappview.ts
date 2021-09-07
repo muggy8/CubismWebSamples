@@ -36,6 +36,18 @@ export class LAppView {
 
     // 画面の表示の拡大縮小や移動の変換を行う行列
     this._viewMatrix = new CubismViewMatrix();
+
+    const offTranslate = (window as any).appHost.on("translate", (newPosition:number[])=>{
+      let [x, y] = newPosition
+      this._viewMatrix.translate(x, y)
+    })
+    this._releaseCallbacks.push(offTranslate)
+
+    const offZoom = (window as any).appHost.on("zoom", (newZoom:number)=>{
+      this._viewMatrix.scale(newZoom, newZoom)
+    })
+    this._releaseCallbacks.push(offZoom)
+
   }
 
   /**
@@ -92,6 +104,9 @@ export class LAppView {
 
     gl.deleteProgram(this._programId);
     this._programId = null;
+
+    this._releaseCallbacks.forEach(fn=>fn())
+    this._releaseCallbacks = []
   }
 
   /**
@@ -273,4 +288,5 @@ export class LAppView {
   _gear: LAppSprite; // ギア画像
   _changeModel: boolean; // モデル切り替えフラグ
   _isClick: boolean; // クリック中
+  _releaseCallbacks: ((any?)=>any)[] = []
 }
