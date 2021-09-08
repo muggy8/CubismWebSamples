@@ -99,7 +99,7 @@ export class LAppView {
     this._gear?.release();
     this._gear = null;
 
-    this._back.release();
+    this._back?.release();
     this._back = null;
 
     gl.deleteProgram(this._programId);
@@ -135,32 +135,34 @@ export class LAppView {
    * 画像の初期化を行う。
    */
   public initializeSprite(): void {
-    const width: number = canvas.width;
-    const height: number = canvas.height;
+    // this part loads the background image which we dont need  o3o
 
-    const textureManager = LAppDelegate.getInstance().getTextureManager();
-    const resourcesPath = LAppDefine.ResourcesPath;
+    // const width: number = canvas.width;
+    // const height: number = canvas.height;
 
-    let imageName = '';
+    // const textureManager = LAppDelegate.getInstance().getTextureManager();
+    // const resourcesPath = LAppDefine.ResourcesPath;
+
+    // let imageName = '';
 
     // 背景画像初期化
-    imageName = LAppDefine.BackImageName;
+    // imageName = LAppDefine.BackImageName;
 
     // 非同期なのでコールバック関数を作成
-    const initBackGroundTexture = (textureInfo: TextureInfo): void => {
-      const x: number = width * 0.5;
-      const y: number = height * 0.5;
+    // const initBackGroundTexture = (textureInfo: TextureInfo): void => {
+    //   const x: number = width * 0.5;
+    //   const y: number = height * 0.5;
 
-      const fwidth = textureInfo.width * 2.0;
-      const fheight = height * 0.95;
-      this._back = new LAppSprite(x, y, fwidth, fheight, textureInfo.id);
-    };
+    //   const fwidth = textureInfo.width * 2.0;
+    //   const fheight = height * 0.95;
+    //   this._back = new LAppSprite(x, y, fwidth, fheight, textureInfo.id);
+    // };
 
-    textureManager.createTextureFromPngFile(
-      resourcesPath + imageName,
-      false,
-      initBackGroundTexture
-    );
+    // textureManager.createTextureFromPngFile(
+    //   resourcesPath + imageName,
+    //   false,
+    //   initBackGroundTexture
+    // );
 
     // this part creates the gear icon which we don't really want with a renderer and stuff
     // // 歯車画像初期化
