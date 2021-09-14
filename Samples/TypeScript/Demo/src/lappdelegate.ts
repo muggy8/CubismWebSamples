@@ -108,6 +108,12 @@ export class LAppDelegate {
     // Cubism SDKの初期化
     this.initializeCubism();
 
+    (window as any).appHost.on("bgcolor", (newBgColor:Array<number>)=>{
+      if (newBgColor.length >= 4){
+        this._bgClearColor = newBgColor
+      }
+    })
+
     return true;
   }
 
@@ -158,7 +164,8 @@ export class LAppDelegate {
       gl.depthFunc(gl.LEQUAL);
 
       // 画面の初期化
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+      // gl.clearColor(0.0, 0.0, 0.0, 0.0);
+      gl.clearColor(this._bgClearColor[0], this._bgClearColor[1], this._bgClearColor[2], this._bgClearColor[3],)
 
       gl.clearDepth(0.0);
 
@@ -300,6 +307,7 @@ export class LAppDelegate {
   _mouseY: number; // マウスY座標
   _isEnd: boolean; // APP終了しているか
   _textureManager: LAppTextureManager; // テクスチャマネージャー
+  _bgClearColor: Array<number> = [1, 1, 1, 1];
 }
 
 /**
