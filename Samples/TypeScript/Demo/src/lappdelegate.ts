@@ -63,7 +63,7 @@ export class LAppDelegate {
 
     // glコンテキストを初期化
     // @ts-ignore
-    gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    gl = canvas.getContext('webgl', { premultipliedAlpha: false }) || canvas.getContext('experimental-webgl', { premultipliedAlpha: false });
 
     if (!gl) {
       alert('Cannot initialize WebGL. This browser does not support.');
@@ -151,19 +151,19 @@ export class LAppDelegate {
       // 時間更新
       LAppPal.updateTime();
 
-      // 画面の初期化
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);
-
       // 深度テストを有効化
       gl.enable(gl.DEPTH_TEST);
 
       // 近くにある物体は、遠くにある物体を覆い隠す
       gl.depthFunc(gl.LEQUAL);
 
+      // 画面の初期化
+      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+      gl.clearDepth(0.0);
+
       // カラーバッファや深度バッファをクリアする
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-      gl.clearDepth(1.0);
 
       // 透過設定
       gl.enable(gl.BLEND);
