@@ -47,17 +47,24 @@ export class LAppView {
       let rememberedZoom = 1
       const offZoom = (window as any).appHost.on("zoom", (newZoom:number)=>{
         rememberedZoom = newZoom
-        this._viewMatrix.scale(newZoom, newZoom)
+        applyTransforms()
       })
       this._releaseCallbacks.push(offZoom)
 
+      let rememberedRotation = 0
       const offRotate = (window as any).appHost.on("rotate", (newRotationInRad:number)=>{
+        rememberedRotation = newRotationInRad
+        applyTransforms()
+      })
+      this._releaseCallbacks.push(offRotate)
+
+      const applyTransforms = ()=>{
         const oldViewMatrix = this._viewMatrix.getArray()
         const oldX = oldViewMatrix[12], oldY = oldViewMatrix[13]
 
         const rotationArray = new Float32Array([
-          Math.cos(newRotationInRad),Math.sin(newRotationInRad),0,0,
-          -Math.sin(newRotationInRad),Math.cos(newRotationInRad),0,0,
+          Math.cos(rememberedRotation),Math.sin(rememberedRotation),0,0,
+          -Math.sin(rememberedRotation),Math.cos(rememberedRotation),0,0,
           0,0,1,0,
           0,0,0,1,
         ])
@@ -69,8 +76,7 @@ export class LAppView {
         this._viewMatrix.scale(rememberedZoom, rememberedZoom)
         this._viewMatrix.multiplyByMatrix(rotationMatrix)
         this._viewMatrix.translate(oldX, oldY)
-      })
-      this._releaseCallbacks.push(offRotate)
+      }
     }
 
   }
