@@ -37,16 +37,41 @@ export class LAppView {
     // 画面の表示の拡大縮小や移動の変換を行う行列
     this._viewMatrix = new CubismViewMatrix();
 
-    const offTranslate = (window as any).appHost.on("translate", (newPosition:number[])=>{
-      let [x, y] = newPosition
-      this._viewMatrix.translate(x, y)
-    })
-    this._releaseCallbacks.push(offTranslate)
+    if ((window as any).appHost){
+      const offTranslate = (window as any).appHost.on("translate", (newPosition:number[])=>{
+        let [x, y] = newPosition
+        this._viewMatrix.translate(x, y)
+      })
+      this._releaseCallbacks.push(offTranslate)
 
-    const offZoom = (window as any).appHost.on("zoom", (newZoom:number)=>{
-      this._viewMatrix.scale(newZoom, newZoom)
-    })
-    this._releaseCallbacks.push(offZoom)
+      let rememberedZoom = 1
+      const offZoom = (window as any).appHost.on("zoom", (newZoom:number)=>{
+        rememberedZoom = newZoom
+        this._viewMatrix.scale(newZoom, newZoom)
+      })
+      this._releaseCallbacks.push(offZoom)
+
+      const offRotate = (window as any).appHost.on("rotate", (newRotationInRad:number)=>{
+        const oldViewMatrix = this._viewMatrix.getArray()
+        const oldX = oldViewMatrix[12], oldY = oldViewMatrix[13]
+
+        const rotationArray = new Float32Array([
+          Math.cos(newRotationInRad),Math.sin(newRotationInRad),0,0,
+          -Math.sin(newRotationInRad),Math.cos(newRotationInRad),0,0,
+          0,0,1,0,
+          0,0,0,1,
+        ])
+
+        const rotationMatrix = new CubismMatrix44()
+        rotationMatrix.setMatrix(rotationArray)
+
+        this._viewMatrix.loadIdentity()
+        this._viewMatrix.scale(rememberedZoom, rememberedZoom)
+        this._viewMatrix.multiplyByMatrix(rotationMatrix)
+        this._viewMatrix.translate(oldX, oldY)
+      })
+      this._releaseCallbacks.push(offRotate)
+    }
 
   }
 
