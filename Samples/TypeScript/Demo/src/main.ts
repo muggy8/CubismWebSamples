@@ -18,6 +18,9 @@ window.onload = (): void => {
   }
 
   LAppDelegate.getInstance().run();
+  if ((window as any).appHost){
+    (window as any).appHost.emit("running")
+  }
 };
 
 /**

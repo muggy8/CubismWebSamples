@@ -369,6 +369,10 @@ export class LAppModel extends CubismUserModel {
         this.setupTextures();
         this.getRenderer().startUp(gl);
       }
+
+      if ((window as any).appHost){
+        (window as any).appHost.emit("modelloaded", setting.getModelFileName())
+      }
     };
   }
 
@@ -499,10 +503,10 @@ export class LAppModel extends CubismUserModel {
 
     let hostParams:Array<String> = Object.keys(this._appHostParams)
     for(
-      let i = 0, param; 
-      param = hostParams[i]; 
+      let i = 0, param;
+      param = hostParams[i];
       i++, param.startsWith("Param") && this._model.addParameterValueById(
-        CubismFramework.getIdManager().getId(param), 
+        CubismFramework.getIdManager().getId(param),
         this._appHostParams[param]
       )
     );
