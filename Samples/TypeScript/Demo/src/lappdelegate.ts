@@ -54,12 +54,6 @@ export class LAppDelegate {
   public initialize(): boolean {
     // キャンバスの作成
     canvas = document.createElement('canvas');
-    if (LAppDefine.CanvasSize === 'auto') {
-      this._resizeCanvas();
-    } else {
-      canvas.width = LAppDefine.CanvasSize.width;
-      canvas.height = LAppDefine.CanvasSize.height;
-    }
 
     // glコンテキストを初期化
     // @ts-ignore
@@ -77,7 +71,13 @@ export class LAppDelegate {
     }
 
     // キャンバスを DOM に追加
-    document.body.appendChild(canvas);
+    document.getElementById("renderer-container").appendChild(canvas);
+    if (LAppDefine.CanvasSize === 'auto') {
+      this._resizeCanvas();
+    } else {
+      canvas.width = LAppDefine.CanvasSize.width;
+      canvas.height = LAppDefine.CanvasSize.height;
+    }
 
     if (!frameBuffer) {
       frameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
@@ -296,8 +296,14 @@ export class LAppDelegate {
    * Resize the canvas to fill the screen.
    */
   private _resizeCanvas(): void {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    if (canvas.parentElement){
+      canvas.width = canvas.parentElement.clientWidth
+      canvas.height = canvas.parentElement.clientHeight
+    }
+    else {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
   }
 
   _cubismOption: Option; // Cubism SDK Option
