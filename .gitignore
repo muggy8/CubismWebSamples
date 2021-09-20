@@ -1,3 +1,6 @@
+# my stuff
+/Samples/Resources/Egg Tybia/*
+
 # Core directory files
 /Core/**/.js
 /Core/**/.ts

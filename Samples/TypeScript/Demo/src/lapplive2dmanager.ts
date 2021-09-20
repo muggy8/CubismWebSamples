@@ -164,7 +164,7 @@ export class LAppLive2DManager {
    * サンプルアプリケーションではモデルセットの切り替えを行う。
    */
   public nextScene(): void {
-    const no: number = (this._sceneIndex + 1) % LAppDefine.ModelDirSize;
+    const no: number = (this._sceneIndex + 1) % LAppDefine.ModelDir.length;
     this.changeScene(no);
   }
 
@@ -205,6 +205,17 @@ export class LAppLive2DManager {
     this._models = new csmVector<LAppModel>();
     this._sceneIndex = 0;
     this.changeScene(this._sceneIndex);
+
+    if ((window as any).appHost) {
+      (window as any).appHost.on("loadModel", (name:string)=>{
+        let index:number = LAppDefine.ModelDir.indexOf(name)
+        if (index < 0){
+          LAppDefine.ModelDir.push(name)
+          index = (LAppDefine.ModelDir.length - 1)
+        }
+        this.changeScene(index)
+      })
+    }
   }
 
   _viewMatrix: CubismMatrix44; // モデル描画に用いるview行列
