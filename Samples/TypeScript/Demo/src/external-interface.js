@@ -1,13 +1,20 @@
 (function(window, setupBindings){
     if (!window.appHost){
         let callbackMemory = {}
+        let stashedEvents = {}
         window.appHost = {
             on: function(eventName, callback){
                 if (!callbackMemory[eventName]){
                     callbackMemory[eventName] = []
                 }
                 callbackMemory[eventName].push(callback)
-                
+
+                if (stashedEvents[eventName]){
+                  for(let stashedEvent of stashedEvents[eventName]){
+                    callback(stashedEvent.eventName, stashedEvent.value)
+                  }
+                }
+
                 return function(){
                     callbackMemory[eventName].splice(
                         callbackMemory[eventName].indexOf(callback),
@@ -16,9 +23,15 @@
                 }
             },
             emit: function(eventName, value){
+              if (callbackMemory[eventName]){
                 for(let callback of callbackMemory[eventName]){
-                    callback(value)
+                  callback(value)
                 }
+              }
+              else{
+                stashedEvents[eventName] = []
+                stashedEvents[eventName].push({eventName, value})
+              }
             }
         }
 
