@@ -11,28 +11,51 @@ import * as LAppDefine from './lappdefine';
 /**
  * ブラウザロード後の処理
  */
-window.onload = (): void => {
-  // create the application instance
-  if (LAppDelegate.getInstance().initialize() == false) {
-    return;
-  }
+if ((window as any).appHost){
+  (window as any).appHost.on("startModel", ()=>{
+    // create the application instance
+    if (LAppDelegate.getInstance().initialize() == false) {
+      return;
+    }
 
-  LAppDelegate.getInstance().run();
-  if ((window as any).appHost){
-    (window as any).appHost.emit("running")
-  }
-};
+    LAppDelegate.getInstance().run();
+    if ((window as any).appHost){
+      (window as any).appHost.emit("running")
+    }
 
-/**
- * 終了時の処理
- */
-window.onbeforeunload = (): void => LAppDelegate.releaseInstance();
+    window.onbeforeunload = (): void => LAppDelegate.releaseInstance();
 
-/**
- * Process when changing screen size.
- */
-window.onresize = () => {
-  if (LAppDefine.CanvasSize === 'auto') {
-    LAppDelegate.getInstance().onResize();
-  }
-};
+    window.onresize = () => {
+      if (LAppDefine.CanvasSize === 'auto') {
+        LAppDelegate.getInstance().onResize();
+      }
+    };
+  })
+}
+else{
+  window.onload = (): void => {
+    // create the application instance
+    if (LAppDelegate.getInstance().initialize() == false) {
+      return;
+    }
+
+    LAppDelegate.getInstance().run();
+    if ((window as any).appHost){
+      (window as any).appHost.emit("running")
+    }
+  };
+
+  /**
+   * 終了時の処理
+   */
+  window.onbeforeunload = (): void => LAppDelegate.releaseInstance();
+
+  /**
+   * Process when changing screen size.
+   */
+  window.onresize = () => {
+    if (LAppDefine.CanvasSize === 'auto') {
+      LAppDelegate.getInstance().onResize();
+    }
+  };
+}

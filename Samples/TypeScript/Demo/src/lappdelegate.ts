@@ -270,6 +270,10 @@ export class LAppDelegate {
     this._cubismOption = new Option();
     this._view = new LAppView();
     this._textureManager = new LAppTextureManager();
+
+    if ((window as any).appHost){
+      (window as any).appHost.on("resize", ()=>this.onResize())
+    }
   }
 
   /**

@@ -29,8 +29,16 @@
                 }
               }
               else{
+                let stashedEvent = {eventName, value}
                 stashedEvents[eventName] = []
-                stashedEvents[eventName].push({eventName, value})
+                stashedEvents[eventName].push(stashedEvent)
+
+                setTimeout(()=>{
+                  let currentIndex = stashedEvents[eventName].indexOf(stashedEvent)
+                  if (currentIndex > -1){
+                    stashedEvents[eventName].splice(currentIndex, 1)
+                  }
+                }, 5000)
               }
             }
         }
