@@ -11,7 +11,7 @@
 
                 if (stashedEvents[eventName]){
                   for(let stashedEvent of stashedEvents[eventName]){
-                    callback(stashedEvent.eventName, stashedEvent.value)
+                    callback(stashedEvent.value)
                   }
                 }
 
